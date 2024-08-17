@@ -1,0 +1,53 @@
+.menubox {
+	font-family: var(--sans-font);
+	border: 1px solid #808080;
+	background-color: white;
+	padding: 0.2em;
+	box-shadow: 0.2rem 0.2rem 1rem #00000080;
+	z-index: initial;
+}
+
+.menubox .menubox-item {
+	display: block;
+	padding: 0.3em 0.5em;
+	cursor: pointer;
+	user-select: none;
+}
+.menubox .menubox-item:hover {
+	color: #607080;
+	background-color: #f0f0f0;
+}
+
+.menubox .menubox-item.disabled,
+.menubox .menubox-item.disabled:hover {
+	color: grey;
+	background-color: initial;
+}
+
+.menubox .menubox-item.multiselect:not(.submenu):before {
+	content: "\2610";
+	padding-right: 0.5em;
+}
+
+.menubox .menubox-item.multiselect:not(.submenu).checked:before {
+	content: "\2611";
+}
+
+.menubox .menubox-item.submenuitem:after {
+	content: ">";
+	margin-left: 0.5em;
+	float: right;
+}
+
+.menubox .menubox-separator {
+	height: 0.1rem;
+	background-color: #808080;
+	border: 0px;
+	margin: 0.6em;
+}
+
+.menubox .menubox-label {
+	display: block;
+	background-color: red;
+}
+
