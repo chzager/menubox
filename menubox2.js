@@ -163,6 +163,7 @@ class Menubox2ItemRenderer
 
 /**
  * A menubox.
+ * @template ContextType
  */
 class Menubox2
 {
@@ -256,6 +257,12 @@ class Menubox2
 	 * @type {number}
 	 */
 	submenuDelay;
+
+	/**
+	 * Current context of the menubox. This is set on {@link popup()} or {@link toggle()}.
+	 * @type {ContextType}
+	 */
+	context;
 
 	/**
 	 * Callback function for clicks on menu items.
@@ -410,7 +417,7 @@ class Menubox2
 	/**
 	 * Pops up the menubox.
 	 * @param {PointerEvent} [mouseEvent] Triggering event. If this is triggered by a pointer event, this **must** be passed here, otherwise the menubox is closed immediately after opening.
-	 * @param {any} [context] Context in which the menubox was opened.
+	 * @param {ContextType} [context] Context in which the menubox was opened.
 	 * @param {HTMLElement} [anchorElement] Element in document to which align the menubox. If omitted, the menubox is aligned to the pointer position.
 	 */
 	popup (mouseEvent, context = null, anchorElement = null)
@@ -523,7 +530,7 @@ class Menubox2
 	/**
 	 * Pops up the menubox if it is not yet opened. Closes the menubox if it is already opened.
 	 * @param {PointerEvent} [mouseEvent] Triggering event. If this is triggered by a pointer event, this **must** be passed here, otherwise the menubox is closed immediately after opening.
-	 * @param {any} [context] Context in which the menubox was opened.
+	 * @param {ContextType} [context] Context in which the menubox was opened.
 	 * @param {HTMLElement} [anchorElement] Element in document to which align the menubox. If omitted, the menubox is aligned to the pointer position.
 	 * @returns {boolean} `true` if the menubox is being shon now, `false` if it was closed.
 	 */
