@@ -2,7 +2,7 @@
  * @typedef Menubox2Definition
  * Definition of a menubox to being created.
  * @property {string} [css] Additional CSS classes. Single string, multiple entries separated by space.
- * @property {"absolute" | "fixed"} [position] Positioning of the menubox on the viewport.
+ * @property {"absolute"|"fixed"} [position] Positioning of the menubox on the viewport.
  * - `"absolute"`: The menubox remains an the document position while scrolling. (Default)
  * - `"fixed"`: The menubox stays at the viewport position even if the document scrolls.
  * @property {Menubox2Adjustment} [adjustment] Directives how to adjust this menubox on popup to another element on the document.
@@ -13,7 +13,7 @@
  * - `"multiselect"`: When an item is clicked, it's "checked" state toggels. The menubox remains opened until closed manually.
  * - `"multiselect_interactive"`: Like "multiselect", but every item click calls the callback so you can react on it.
  * @property {Menubox2Callback} [callback] Callback function on when a menubox item is clicked.
- * @property {Array<Menubox2ItemProperties | Menubox2Separator>} [items] List of items of this menubox.
+ * @property {Array<Menubox2ItemProperties|Menubox2Separator>} [items] List of items of this menubox.
  * @property {Menubox2ItemRenderer} [itemRenderer] Function that creates the HTML elements of this menubox's items. Per default the native `Menubox2Item.htmlConstructor()` is used.
  * @property {number} [submenuDelay] Delay in milliseconds before a submenu is opened after it's parent menuitem was hovered. Default is `300`ms.
  *
@@ -50,4 +50,5 @@
  * Function that constructs an HTML element that represents a menu item.
  * @param {Menubox2ItemProperties} itemProps Properties of the menu item to get its representing HTML element constructed.
  * @returns {HTMLElement} Returns an HTML element that represents the menu item.
+ *
  */
