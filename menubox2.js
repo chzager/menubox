@@ -6,18 +6,19 @@
 
 /**
  * An item of a menubox.
+ * @template ContextType
  */
 class Menubox2Item
 {
 	/**
 	 * This menu items key.
-	 * @type {string}
+	 * @type {string|undefined}
 	 */
 	key;
 
 	/**
 	 * Menubox that owns this menu item.
-	 * @type {Menubox2}
+	 * @type {Menubox2<ContextType>}
 	 */
 	menubox;
 
@@ -154,9 +155,9 @@ class Menubox2ItemRenderer
 		result.classList.add((!!itemProps.key) ? "menubox-item" : "menubox-label");
 		if ((itemProps.cssClasses instanceof Array) && (itemProps.cssClasses.length > 0))
 		{
-			result.classList.add(itemProps.cssClasses);
+			result.classList.add(...itemProps.cssClasses);
 		}
-		result.textContent = itemProps.label ?? itemProps.key;
+		result.textContent = itemProps.label ?? itemProps.key ?? null;
 		return result;
 	}
 }
@@ -201,7 +202,7 @@ class Menubox2
 	 * For menuboxes with any kind of multiselect, this toggles the "checked" state of the clicked menu item.
 	 *
 	 * @static
-	 * @param {Event} event Event that has been triggered by clicking on the menu item.
+	 * @param {PointerEvent} event Event that has been triggered by clicking on the menu item.
 	 * @param {Menubox2} menubox Menubox that has send this event.
 	 */
 	static onMenuItemClick (event, menubox)
@@ -236,7 +237,7 @@ class Menubox2
 
 	/**
 	 * This menuboxes menu items.
-	 * @type {Map<string, Menubox2Item>}
+	 * @type {Map<string, Menubox2Item<ContextType>>}
 	 */
 	items;
 
@@ -275,7 +276,7 @@ class Menubox2
 	 * @param {Menubox2Definition} options Definition of how this menubox is to be created.
 	 * @param {Menubox2} [_parentMenubox] Parent menubox if this is a submenu. For internal use only!
 	 */
-	constructor(id, options, _parentMenubox = null)
+	constructor(id, options, _parentMenubox = undefined)
 	{
 		/**
 		 * Creates anew HTML element.
@@ -420,7 +421,7 @@ class Menubox2
 	 * @param {ContextType} [context] Context in which the menubox was opened.
 	 * @param {HTMLElement} [anchorElement] Element in document to which align the menubox. If omitted, the menubox is aligned to the pointer position.
 	 */
-	popup (mouseEvent, context = null, anchorElement = null)
+	popup (mouseEvent, context = undefined, anchorElement = undefined)
 	{
 		/**
 		 * @param {Menubox2} menubox This menubox.
