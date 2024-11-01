@@ -35,6 +35,7 @@
  * Definition of a menubox item for creation.
  * @property {string} [key] Key of the item. Only items with a key trigger callbacks on clicks.
  * @property {string} [label] label of the item to be displayed on the menubox.
+ * @property {Menubox2Callback} [callback] This menu item's individual _onclick_ callback function. If omitted, the menubox's callback is called.
  * @property {boolean} [checked] Whether the item has the `checked` state. (Default `false`)
  * @property {boolean} [enabled] Whether the item is enabled for clicks. Only enabled items with a key trigger callbacks on clicks. (Default `true`).
  * @property {Array<string>} [cssClasses] Additonal classes for the menu item.

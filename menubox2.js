@@ -64,6 +64,15 @@ class Menubox2Item
 				this.submenu = new Menubox2(submenuId, submenuDef, parent);
 				this.element.classList.add("submenuitem");
 			}
+			else if (typeof properties.callback === "function")
+			{
+				this.element.onclick = (evt) =>
+				{
+					evt.stopPropagation();
+					properties.callback(this);
+					this.menubox.close();
+				};
+			}
 		}
 		this.element.onmouseenter = (evt) =>
 		{
