@@ -69,8 +69,11 @@ class Menubox2Item
 				this.element.onclick = (evt) =>
 				{
 					evt.stopPropagation();
-					properties.callback(this);
-					this.menubox.close();
+					if (this.enabled !== false)
+					{
+						properties.callback(this);
+						this.menubox.close();
+					}
 				};
 			}
 		}
