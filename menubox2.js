@@ -1,7 +1,10 @@
 /// <reference path="./menubox2.d.js" />
 /**
- * https://github.com/suppenhuhn79/menubox
- * Copyright 2023 Christoph Zager, licensed under the MIT License.
+ * Pop-up menus.
+ *
+ * https://github.com/chzager/menubox
+ * @copyright (c) 2024 Christoph Zager
+ * @license MIT
  */
 
 /**
