@@ -14,7 +14,7 @@
 class Menubox2Item
 {
 	/**
-	 * This menu items key.
+	 * This menu item's key.
 	 * @type {string|undefined}
 	 */
 	key;
