@@ -1,4 +1,4 @@
-/// <reference path="./menubox2.d.js" />
+/// <reference path="./menubox2.types.js" />
 /**
  * Pop-up menus.
  *
