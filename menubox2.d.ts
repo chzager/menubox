@@ -1,8 +1,9 @@
 /**
  * A pop-up menubox.
- * @link https://github.com/chzager/menubox
+ * @version 1.0.0
  * @copyright (c) 2024 Christoph Zager
  * @license MIT
+ * @link https://github.com/chzager/menubox
  */
 interface Menubox2<ContextType> {
 	/** This menuboxes HTML element on the document. */
