@@ -1,5 +1,5 @@
 /**
- * A pop-up menubox.
+ * Menubox - pop-up GUI elements as menus for web applications.
  * @version 1.0.0
  * @copyright (c) 2024 Christoph Zager
  * @license MIT
@@ -25,7 +25,7 @@ interface Menubox2<ContextType> {
 	context: ContextType;
 
 	/** Callback function for clicks on menu items. */
-	callback: Menubox2Callback;
+	callback: Menubox2Callback<ContextType>;
 
 	/** Gives the very ancestor of a menubox, especially of a sub-menubox. */
 	get rootMenubox(): Menubox2<ContextType>;
@@ -96,6 +96,7 @@ declare var Menubox2: {
 	 * @param options Definition of how this menubox is to be created.
 	 */
 	new <ContextType>(id: string, options: Menubox2Definition): Menubox2<ContextType>;
+	prototype: Menubox2<any>;
 };
 
 /** Definition of a menubox to be created. */
@@ -126,7 +127,7 @@ interface Menubox2Definition {
 	selectMode?: keyof typeof Menubox2.SELECT_MODE;
 
 	/** Callback function when a menubox item is clicked. */
-	callback?: Menubox2Callback;
+	callback?: Menubox2Callback<any>;
 
 	/** List of items in the menubox. */
 	items?: Array<Menubox2ItemProperties | Menubox2Separator>;
@@ -150,13 +151,11 @@ interface Menubox2Adjustment {
 /** CSS styles for animations on opening/closing the menubox. */
 type Menubox2Transistion = any; //{ [key: string]: [string, string] };
 
-/** Callback function when a menubox item is clicked. */
-interface Menubox2Callback {
-	/**
-	 * @param item The menubox item that has been clicked.
-	 */
-	<ContextType>(item: Menubox2Item<ContextType>): void;
-}
+/**
+ * Callback function when a menubox item is clicked.
+ * @param item The menubox item that has been clicked.
+ */
+type Menubox2Callback<ContextType> = (item: Menubox2Item<ContextType>) => void;
 
 /** Definition of a menubox item for creation. */
 interface Menubox2ItemProperties {
@@ -167,7 +166,7 @@ interface Menubox2ItemProperties {
 	label?: string;
 
 	/** Individual callback function for this menu item. */
-	callback?: Menubox2Callback;
+	callback?: Menubox2Callback<any>;
 
 	/** Whether the item has the `checked` state. Default is `false`. */
 	checked?: boolean;
@@ -192,13 +191,11 @@ interface Menubox2Separator {
 	separator: any;
 }
 
-/** Function that constructs an HTML element representing a menu item. */
-interface Menubox2ItemRenderFunction {
-	/**
-	 * @param itemProps Properties of the menu item to get it's representing HTML element constructed.
-	 */
-	(itemProps: Menubox2ItemProperties): HTMLElement;
-}
+/**
+ * Function that constructs an HTML element representing a menu item.
+ * @param itemProps Properties of the menu item to get it's representing HTML element constructed.
+ */
+type Menubox2ItemRenderFunction = (itemProps: Menubox2ItemProperties) => HTMLElement;
 
 /** An item of a menubox. */
 interface Menubox2Item<ContextType> {

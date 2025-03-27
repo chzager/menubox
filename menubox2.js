@@ -1,5 +1,5 @@
 /**
- * Pop-up menus.
+ * Menubox - pop-up GUI elements as menus for web applications.
  * @version 1.0.0
  * @copyright (c) 2024 Christoph Zager
  * @license MIT
