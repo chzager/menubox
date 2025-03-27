@@ -33,16 +33,14 @@ class Menubox2Item
 	/**
 	 * A submenu that opens on that menuitem.
 	 *
-	 * Menuitems with submenus do not trigger the callback nor do they close the
-	 * menubox when clicked.
+	 * Menuitems with submenus do not trigger the callback nor do they close the menubox when clicked.
 	 * @type {Menubox2}
 	 */
 	submenu;
 
 	/**
 	 * @param {Menubox2ItemProperties} properties Properties of the menu item.
-	 * @param {Menubox2} parent Menubox that owns this menu item.
-	 * If omitted, the default constructor function of `Menubox2Item` is used.
+	 * @param {Menubox2} parent Menubox that owns this menu item. If omitted, the default constructor function of `Menubox2Item` is used.
 	 */
 	constructor(properties, parent)
 	{
@@ -177,7 +175,7 @@ class Menubox2ItemRenderer
 }
 
 /**
- * A menubox.
+ * A pop-up menubox.
  * @template ContextType
  */
 class Menubox2
@@ -191,8 +189,8 @@ class Menubox2
 
 	/**
 	 * Map of all menubox instances.
-	 * @static
 	 * @type {Map<string, Menubox2>}
+	 * @static
 	 */
 	static instances = new Map();
 
@@ -215,9 +213,9 @@ class Menubox2
 	 *
 	 * For menuboxes with any kind of multiselect, this toggles the "checked" state of the clicked menu item.
 	 *
-	 * @static
 	 * @param {PointerEvent} event Event that has been triggered by clicking on the menu item.
 	 * @param {Menubox2} menubox Menubox that has send this event.
+	 * @static
 	 */
 	static onMenuItemClick (event, menubox)
 	{
@@ -293,7 +291,6 @@ class Menubox2
 	constructor(id, options, _parentMenubox = undefined)
 	{
 		/**
-		 * Creates anew HTML element.
 		 * @param {string} tagName
 		 * @param {string} cssClass
 		 * @param {string} [textContent]
@@ -316,7 +313,6 @@ class Menubox2
 		};
 		/**
 		 * Creates the items on this menubox.
-		 * @private
 		 * @param {Menubox2} self the very this menubox; for a clean code.
 		 * @param {Array<Menubox2ItemProperties>} itemDefs Definitions of items to be created on the menubox.
 		 */
@@ -347,8 +343,8 @@ class Menubox2
 		};
 		if (Menubox2.instances.has(id))
 		{
-			console.info("Menubox \"" + id + "\" already existed, has been replaced.");
-			document.body.querySelector("[data-menubox=\"" + id + "\"]")?.remove();
+			console.debug(`Menubox "${id}" already existed, has been replaced.`);
+			document.body.querySelector(`[data-menubox="${id}"]`)?.remove();
 		}
 		this.id = id;
 		this.parentMenubox = _parentMenubox;
@@ -384,8 +380,8 @@ class Menubox2
 	 * Sets the visibility of the menubox.
 	 *
 	 * This method respects opening and closing animations vie transistions.
-	 * @private
 	 * @param {boolean} visible Whether the menubox is to be visible or to be hidden.
+	 * @private
 	 */
 	_setVisibility (visible)
 	{
