@@ -1,53 +1,83 @@
 .menubox {
+	--lines-color: #ccc;
+	--content-padding: 0.25rem;
+	--hover-foreground: #335588;
+	--hover-background: #f0f0f0;
+	--disabled-foreground: #a0a0a0;
+	--dim-foreground: #c0c0c0;
+	--dim-hover-foreground: #8090a0;
+
 	font-family: sans-serif;
-	border: 1px solid #808080;
+	font-size: 1rem;
+	border: 1px solid var(--lines-color);
 	background-color: white;
-	padding: 0.2em;
-	box-shadow: 0.2rem 0.2rem 1rem #00000080;
+	padding: var(--content-padding) 0;
+	box-shadow: 0 0.3rem 1rem #00000092;
+	border-radius: 0.5rem;
+	overflow: hidden;
 	z-index: initial;
-}
 
-.menubox .menubox-item {
-	display: block;
-	padding: 0.3em 0.5em;
-	cursor: pointer;
-	user-select: none;
-}
-.menubox .menubox-item:hover {
-	color: #607080;
-	background-color: #f0f0f0;
-}
+	.menubox-wrapper {
+		user-select: none;
+		white-space: nowrap;
+		min-width: max-content;
+	}
 
-.menubox .menubox-item.disabled,
-.menubox .menubox-item.disabled:hover {
-	color: grey;
-	background-color: initial;
-}
+	.menubox-item,
+	.menubox-label {
+		display: block;
+		padding: 0.3em 2em 0.3em 1em;
+		margin: 0 var(--content-padding);
+		border-radius: 0.3em;
+	}
+	.menubox-item {
+		&.disabled {
+			color: var(--disabled-foreground);
+		}
 
-.menubox .menubox-item.multiselect:not(.submenu):before {
-	content: "\2610";
-	padding-right: 0.5em;
-}
+		&:not(.disabled) {
+			&:hover,
+			&.submenuitem.active {
+				cursor: pointer;
+				color: var(--hover-foreground);
+				background-color: var(--hover-background);
+			}
+			&.submenuitem:hover::after,
+			&.submenuitem.active:after {
+				color: var(--dim-hover-foreground);
+			}
+		}
 
-.menubox .menubox-item.multiselect:not(.submenu).checked:before {
-	content: "\2611";
-}
+		&.multiselect:not(.submenu) {
+			padding-left: 0.3em;
+			&:before {
+				content: "\2610";
+				padding-right: 0.5em;
+			}
+			&.checked:before {
+				content: "\2611";
+			}
+		}
 
-.menubox .menubox-item.submenuitem:after {
-	content: ">";
-	margin-left: 0.5em;
-	float: right;
-}
+		&.submenuitem {
+			padding-right: 0.3em;
+			&:after {
+				content: ">";
+				color: var(--dim-foreground);
+				margin-left: 1em;
+				float: right;
+			}
+		}
+	}
 
-.menubox .menubox-separator {
-	height: 0.1rem;
-	background-color: #808080;
-	border: 0px;
-	margin: 0.6em;
-}
+	.menubox-label {
+		font-style: italic;
+	}
 
-.menubox .menubox-label {
-	display: block;
-	background-color: red;
+	.menubox-separator {
+		height: 1px;
+		background-color: var(--lines-color);
+		border: 0;
+		margin: 0.6rem 0;
+	}
 }
-
