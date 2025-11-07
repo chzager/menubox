@@ -6,14 +6,18 @@
  * @link https://github.com/chzager/menubox
  */
 interface Menubox2<ContextType> {
-	/** This menuboxes HTML element on the document. */
+	/** Unique identifier of the menubox. */
+	id: string;
+
+	/** HTML element that represents this menubox on the document. */
 	element: HTMLElement;
 
-	/** This menuboxes menu items. */
-	items: Map<string, Menubox2Item<ContextType>>;
+	/** Items in this menubox. */
+	get items(): Map<string, Menubox2Item<ContextType>>;
+	set items(val: Array<Menubox2ItemDefinition>);
 
-	/** Renderer to create the HTML elements that represents a single menu item on the menu box. */
-	itemRenderer: Menubox2ItemRenderer;
+	/** Renderer to create the HTML elements that represent a single menu item. */
+	itemRenderer: Menubox2ItemRenderFunction;
 
 	/** Directives how to adjust this menubox to another element on the document. */
 	adjustment: Menubox2Adjustment;
@@ -26,6 +30,12 @@ interface Menubox2<ContextType> {
 
 	/** Callback function for clicks on menu items. */
 	callback: Menubox2Callback<ContextType>;
+
+	/** Mode of how menubox items can be selected. */
+	selectMode: keyof typeof Menubox2.SELECT_MODE;
+
+	/** The parent manubox if this is an submenu. */
+	parentMenubox?: Menubox2<any>;
 
 	/** Gives the very ancestor of a menubox, especially of a sub-menubox. */
 	get rootMenubox(): Menubox2<ContextType>;
@@ -91,6 +101,9 @@ declare var Menubox2: {
 	/** Closes all menuboxes. */
 	closeAll(): void;
 
+	/** Default creator for a menu item's representation HTML element. */
+	itemRenderer: Menubox2ItemRenderFunction;
+
 	/**
 	 * @param id Id of this menubox.
 	 * @param options Definition of how this menubox is to be created.
@@ -114,8 +127,8 @@ interface Menubox2Definition {
 	/** Directives for adjusting the menubox to another element. */
 	adjustment?: Menubox2Adjustment;
 
-	/** CSS styles for animations on opening/closing the menubox. */
-	transistions?: Menubox2Transistion;
+	/** CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox. */
+	transitions?: { [property: string]: [string, string] };
 
 	/**
 	 * Mode of how menubox items can be selected.
@@ -130,10 +143,10 @@ interface Menubox2Definition {
 	callback?: Menubox2Callback<any>;
 
 	/** List of items in the menubox. */
-	items?: Array<Menubox2ItemProperties | Menubox2Separator>;
+	items?: Array<Menubox2ItemDefinition | Menubox2Separator>;
 
 	/** Function to create HTML elements for menubox items. */
-	itemRenderer?: Menubox2ItemRenderer;
+	itemRenderer?: Menubox2ItemRenderFunction;
 
 	/** Delay in milliseconds before a submenu opens after hovering. */
 	submenuDelay?: number;
@@ -148,9 +161,6 @@ interface Menubox2Adjustment {
 	vertical?: "above" | "top" | "bottom" | "below";
 }
 
-/** CSS styles for animations on opening/closing the menubox. */
-type Menubox2Transistion = any; //{ [key: string]: [string, string] };
-
 /**
  * Callback function when a menubox item is clicked.
  * @param item The menubox item that has been clicked.
@@ -158,7 +168,7 @@ type Menubox2Transistion = any; //{ [key: string]: [string, string] };
 type Menubox2Callback<ContextType> = (item: Menubox2Item<ContextType>) => void;
 
 /** Definition of a menubox item for creation. */
-interface Menubox2ItemProperties {
+interface Menubox2ItemDefinition {
 	/** Key of the item. Only items with a key trigger callbacks on clicks. */
 	key?: string;
 
@@ -184,6 +194,9 @@ interface Menubox2ItemProperties {
 	 * So menuitems with submenus are required to have a key.
 	 */
 	submenu?: Menubox2Definition;
+
+	/** Any properties for custom item render functions. @see {@linkcode Menubox2ItemRenderFunction} */
+	[k: string]: any;
 }
 
 /** A separator between menubox items. */
@@ -195,7 +208,7 @@ interface Menubox2Separator {
  * Function that constructs an HTML element representing a menu item.
  * @param itemProps Properties of the menu item to get it's representing HTML element constructed.
  */
-type Menubox2ItemRenderFunction = (itemProps: Menubox2ItemProperties) => HTMLElement;
+type Menubox2ItemRenderFunction = (itemProps: Menubox2ItemDefinition) => HTMLElement;
 
 /** An item of a menubox. */
 interface Menubox2Item<ContextType> {
@@ -225,7 +238,7 @@ interface Menubox2Item<ContextType> {
 	 */
 	enabled: boolean;
 
-	/** The menu items label. This is the text that is being displayed in the document. */
+	/** The label of the menu item. This is the text that is being displayed in the document. */
 	get label(): string;
 }
 declare var Menubox2Item: {
@@ -237,9 +250,3 @@ declare var Menubox2Item: {
 	new <ContextType>(properties: any, parent: Menubox2<ContextType>): Menubox2Item<ContextType>;
 	readonly prototype: Menubox2Item<any>;
 };
-
-/** Base interface for creating HTML elements that act as a menubox item on the UI. */
-interface Menubox2ItemRenderer {
-	/** For a menu item, this constructs its representing HTML element. */
-	create: Menubox2ItemRenderFunction;
-}
