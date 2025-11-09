@@ -4,128 +4,7 @@
  * @copyright (c) 2024 Christoph Zager
  * @license MIT
  * @link https://github.com/chzager/menubox
- */
-
-/**
- * An item of a menubox.
- * @template ContextType
- */
-class Menubox2Item
-{
-	/**
-	 * @param {Menubox2ItemDefinition} properties Properties of the menu item.
-	 * @param {Menubox2<ContextType>} parent Menubox that owns this menu item. If omitted, the default constructor function of `Menubox2Item` is used.
-	 */
-	constructor(properties, parent)
-	{
-		/** Menubox that owns this menu item. */
-		this.menubox = parent;
-		/** This menu item's key. */
-		this.key = properties.key;
-		/** HTML element that represents this menu item. */
-		this.element = parent.itemRenderer(properties);
-		if ((typeof properties.key === "string") && (properties.key !== ""))
-		{
-			this.element.dataset.key = properties.key;
-			if (properties.submenu instanceof Object)
-			{
-				const submenuId = parent.id + "." + this.key;
-				const submenuDef = Object.assign({}, properties.submenu, {
-					adjustment: {
-						horizontal: "after",
-						vertical: "submenu-top" // "submenu-top" is reserved for submenus and is therefore not documented.
-					},
-					transitions: properties.submenu.transitions ?? parent.transitions,
-					css: "submenubox",
-					callback: parent.callback
-				});
-				/** A submenu that opens on that menuitem. Menuitems with submenus do not trigger the callback nor do they close the menubox when clicked. @type {Menubox2<ContextType>} */
-				this.submenu = new Menubox2(submenuId, submenuDef, parent);
-				this.element.classList.add("submenuitem");
-			}
-			else if (typeof properties.callback === "function")
-			{
-				this.element.addEventListener("click", (evt) =>
-				{
-					evt.stopPropagation();
-					if (this.enabled)
-					{
-						properties.callback(this);
-						this.menubox.close();
-					}
-				});
-			}
-		}
-		this.element.addEventListener("mouseenter", (evt) =>
-		{
-			this.menubox.closeSubmenus();
-			if (this.submenu instanceof Menubox2)
-			{
-				/** Undocumented internal field for submenu popup-on-hover delays. */
-				Menubox2.currentSubmenuTimerId = setTimeout(
-					() =>
-					{
-						this.submenu.popup(evt, this.menubox.context, this.element);
-						this.element.classList.add("active");
-					},
-					parent.submenuDelay);
-			}
-		});
-		this.element.classList.toggle("multiselect", parent.isMultiselect);
-		this.element.classList.toggle("checked", (properties.checked === true));
-		this.element.classList.toggle("disabled", (properties.enabled === false));
-	};
-
-	/**
-	 * Tells whether the item has the "checked" state or not.
-	 */
-	get checked ()
-	{
-		return this.element.classList.contains("checked");
-	}
-	set checked (val)
-	{
-		if (typeof val === "boolean")
-		{
-			this.element.classList.toggle("checked", val);
-		}
-		else
-		{
-			throw new TypeError("Boolean value expected.");
-		}
-	}
-
-	/**
-	 * Tells whether the item is enabled or not. Disabled items do not trigger the callback when they are clicked.
-	 * Only enabled items with a key trigger callbacks on clicks.
-	 */
-	get enabled ()
-	{
-		return !(this.element.classList.contains("disabled"));
-	}
-	set enabled (val)
-	{
-		if (typeof val === "boolean")
-		{
-			this.element.classList.toggle("disabled", !val);
-		}
-		else
-		{
-			throw new TypeError("Boolean value expected.");
-		}
-	}
-
-	/**
-	 * The label of the menu item. This is the text that is being displayed in the document.
-	 */
-	get label ()
-	{
-		return this.element.textContent;
-	}
-}
-
-/**
- * A pop-up menubox.
+ *
  * @template ContextType
  */
 class Menubox2
@@ -597,6 +476,124 @@ class Menubox2
 		return element;
 	};
 };
+
+/**
+ * An item of a menubox.
+ * @template ContextType
+ */
+class Menubox2Item
+{
+	/**
+	 * @param {Menubox2ItemDefinition} properties Properties of the menu item.
+	 * @param {Menubox2<ContextType>} parent Menubox that owns this menu item. If omitted, the default constructor function of `Menubox2Item` is used.
+	 */
+	constructor(properties, parent)
+	{
+		/** Menubox that owns this menu item. */
+		this.menubox = parent;
+		/** This menu item's key. */
+		this.key = properties.key;
+		/** HTML element that represents this menu item. */
+		this.element = parent.itemRenderer(properties);
+		if ((typeof properties.key === "string") && (properties.key !== ""))
+		{
+			this.element.dataset.key = properties.key;
+			if (properties.submenu instanceof Object)
+			{
+				const submenuId = parent.id + "." + this.key;
+				const submenuDef = Object.assign({}, properties.submenu, {
+					adjustment: {
+						horizontal: "after",
+						vertical: "submenu-top" // "submenu-top" is reserved for submenus and is therefore not documented.
+					},
+					transitions: properties.submenu.transitions ?? parent.transitions,
+					css: "submenubox",
+					callback: parent.callback
+				});
+				/** A submenu that opens on that menuitem. Menuitems with submenus do not trigger the callback nor do they close the menubox when clicked. @type {Menubox2<ContextType>} */
+				this.submenu = new Menubox2(submenuId, submenuDef, parent);
+				this.element.classList.add("submenuitem");
+			}
+			else if (typeof properties.callback === "function")
+			{
+				this.element.addEventListener("click", (evt) =>
+				{
+					evt.stopPropagation();
+					if (this.enabled)
+					{
+						properties.callback(this);
+						this.menubox.close();
+					}
+				});
+			}
+		}
+		this.element.addEventListener("mouseenter", (evt) =>
+		{
+			this.menubox.closeSubmenus();
+			if (this.submenu instanceof Menubox2)
+			{
+				/** Undocumented internal field for submenu popup-on-hover delays. */
+				Menubox2.currentSubmenuTimerId = setTimeout(
+					() =>
+					{
+						this.submenu.popup(evt, this.menubox.context, this.element);
+						this.element.classList.add("active");
+					},
+					parent.submenuDelay);
+			}
+		});
+		this.element.classList.toggle("multiselect", parent.isMultiselect);
+		this.element.classList.toggle("checked", (properties.checked === true));
+		this.element.classList.toggle("disabled", (properties.enabled === false));
+	};
+
+	/**
+	 * Tells whether the item has the "checked" state or not.
+	 */
+	get checked ()
+	{
+		return this.element.classList.contains("checked");
+	}
+	set checked (val)
+	{
+		if (typeof val === "boolean")
+		{
+			this.element.classList.toggle("checked", val);
+		}
+		else
+		{
+			throw new TypeError("Boolean value expected.");
+		}
+	}
+
+	/**
+	 * Tells whether the item is enabled or not. Disabled items do not trigger the callback when they are clicked.
+	 * Only enabled items with a key trigger callbacks on clicks.
+	 */
+	get enabled ()
+	{
+		return !(this.element.classList.contains("disabled"));
+	}
+	set enabled (val)
+	{
+		if (typeof val === "boolean")
+		{
+			this.element.classList.toggle("disabled", !val);
+		}
+		else
+		{
+			throw new TypeError("Boolean value expected.");
+		}
+	}
+
+	/**
+	 * The label of the menu item. This is the text that is being displayed in the document.
+	 */
+	get label ()
+	{
+		return this.element.textContent;
+	}
+}
 
 //#region Event listeners on clicks and keydows on the document to close menuboxes.
 window.addEventListener("click", (pointerEvent) =>
