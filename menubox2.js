@@ -508,7 +508,8 @@ class Menubox2Item
 					},
 					transitions: properties.submenu.transitions ?? parent.transitions,
 					css: "submenubox",
-					callback: parent.callback
+					callback: parent.callback,
+					itemRenderer: parent.itemRenderer,
 				});
 				/** A submenu that opens on that menuitem. Menuitems with submenus do not trigger the callback nor do they close the menubox when clicked. @type {Menubox2<ContextType>} */
 				this.submenu = new Menubox2(submenuId, submenuDef, parent);
@@ -530,7 +531,7 @@ class Menubox2Item
 		this.element.addEventListener("mouseenter", (evt) =>
 		{
 			this.menubox.closeSubmenus();
-			if (this.submenu instanceof Menubox2)
+			if ((this.submenu instanceof Menubox2) && (this.enabled))
 			{
 				/** Undocumented internal field for submenu popup-on-hover delays. */
 				Menubox2.currentSubmenuTimerId = setTimeout(
