@@ -13,7 +13,7 @@ interface Menubox2<ContextType> {
 	element: HTMLElement;
 
 	/** Items in this menubox. */
-	get items(): Map<string, Menubox2Item<ContextType>>;
+	get items(): Array<Menubox2Item<ContextType>>;
 	set items(val: Array<Menubox2ItemDefinition>);
 
 	/** Renderer to create the HTML elements that represent a single menu item. */
@@ -143,7 +143,7 @@ interface Menubox2Definition {
 	callback?: Menubox2Callback<any>;
 
 	/** List of items in the menubox. */
-	items?: Array<Menubox2ItemDefinition | Menubox2Separator>;
+	items: Array<Menubox2ItemDefinition | Menubox2Separator>;
 
 	/** Function to create HTML elements for menubox items. */
 	itemRenderer?: Menubox2ItemRenderFunction;
