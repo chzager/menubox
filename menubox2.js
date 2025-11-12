@@ -118,6 +118,8 @@ class Menubox2
 		this.parentMenubox = _parentMenubox;
 		/** Mode of how menubox items can be selected. */
 		this.selectMode = options.selectMode ?? Menubox2.SELECT_MODE.normal;
+		/** Event handler before the menu acutally pops up. */
+		this.beforePopup = options.beforePopup;
 		/** Callback function for clicks on menu items. */
 		this.callback = options.callback;
 		/** Renderer to create the HTML elements that represent a single menu item. */
@@ -311,6 +313,7 @@ class Menubox2
 		itemsElement.style.height = null;
 		itemsElement.style.overflowY = null;
 		this.context = context;
+		this.beforePopup?.(this, pointerEvent);
 		this.#setVisibility(true);
 		if (anchorElement instanceof HTMLElement)
 		{

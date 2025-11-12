@@ -14,6 +14,7 @@
  * - `"multiselect"`: When an item is clicked, it's "checked" state toggels. The menubox remains opened until closed manually.
  * - `"multiselect_interactive"`: Like "multiselect", but every item click calls the callback so you can react on it.
  * @property {Menubox2Callback} [callback] Callback function on when a menubox item is clicked.
+ * @property {(menubox: Menubox2<any>, event: PointerEvent) => void} [beforePopup] Event handler before the menu acutally pops up.
  * @property {Menubox2ItemRenderer} [itemRenderer] Function that creates the HTML elements of this menubox's items. Per default the native `Menubox2Item.htmlConstructor()` is used.
  * @property {number} [submenuDelay] Delay in milliseconds before a submenu is opened after it's parent menuitem was hovered. Default is `300`ms.
  *

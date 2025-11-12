@@ -28,6 +28,9 @@ interface Menubox2<ContextType> {
 	/** Current context of the menubox. This is set on {@linkcode popup()} or {@linkcode toggle()}. */
 	context: ContextType;
 
+	/** Event handler before the menu acutally pops up. */
+	beforePopup: (menubox: Menubox2<ContextType>, event: PointerEvent) => void;
+
 	/** Callback function for clicks on menu items. */
 	callback: Menubox2Callback<ContextType>;
 
@@ -138,6 +141,9 @@ interface Menubox2Definition {
 	 * - `"multiselect_interactive"`: Like "multiselect", but every item click calls the callback so you can react on it.
 	 */
 	selectMode?: keyof typeof Menubox2.SELECT_MODE;
+
+	/** Event handler before the menu acutally pops up. */
+	beforePopup?: (menubox: Menubox2<any>, event: PointerEvent) => void;
 
 	/** Callback function when a menubox item is clicked. */
 	callback?: Menubox2Callback<any>;
