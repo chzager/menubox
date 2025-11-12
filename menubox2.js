@@ -504,16 +504,20 @@ class Menubox2Item
 			if (properties.submenu instanceof Object)
 			{
 				const submenuId = parent.id + "." + this.key;
-				const submenuDef = Object.assign({}, properties.submenu, {
-					adjustment: {
-						horizontal: "after",
-						vertical: "submenu-top" // "submenu-top" is reserved for submenus and is therefore not documented.
+				const submenuDef = Object.assign(
+					{
+						adjustment: {
+							horizontal: "after",
+							vertical: "submenu-top" // "submenu-top" is reserved for submenus and is therefore not documented.
+						},
+						transitions: properties.submenu.transitions ?? parent.transitions,
+						callback: parent.callback,
+						itemRenderer: parent.itemRenderer,
 					},
-					transitions: properties.submenu.transitions ?? parent.transitions,
-					css: "submenubox",
-					callback: parent.callback,
-					itemRenderer: parent.itemRenderer,
-				});
+					properties.submenu,
+					{
+						css: "submenubox",
+					});
 				/** A submenu that opens on that menuitem. Menuitems with submenus do not trigger the callback nor do they close the menubox when clicked. @type {Menubox2<ContextType>} */
 				this.submenu = new Menubox2(submenuId, submenuDef, parent);
 				this.element.classList.add("submenuitem");
