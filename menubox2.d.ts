@@ -19,10 +19,10 @@ interface Menubox2<ContextType> {
 	/** Renderer to create the HTML elements that represent a single menu item. */
 	itemRenderer: Menubox2ItemRenderFunction;
 
-	/** Directives how to adjust this menubox to another element on the document. */
-	adjustment: Menubox2Adjustment;
+	/** Directives how to align this menubox to another element. */
+	align: Menubox2Alignment;
 
-	/** Delay in milliseconds before a submenu is opened after it's parent menuitem was hovered. Default is `300`ms. */
+	/** Delay in milliseconds before a submenu is opened after it's parent menu item was hovered. Default is `300`ms. */
 	submenuDelay: number;
 
 	/** Current context of the menubox. This is set on {@linkcode popup()} or {@linkcode toggle()}. */
@@ -127,8 +127,13 @@ interface Menubox2Definition {
 	 */
 	position?: "absolute" | "fixed";
 
-	/** Directives for adjusting the menubox to another element. */
-	adjustment?: Menubox2Adjustment;
+	/**
+	 * // DEPRECATED Directives how to align this menubox to another element on the document.
+	 * @deprecated Use `align` instead.
+	 */
+	adjustment?: Menubox2Alignment;
+	/** Directives for aligning the menubox to another element. */
+	align?: Menubox2Alignment;
 
 	/** CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox. */
 	transitions?: { [property: string]: [string, string] };
@@ -158,12 +163,12 @@ interface Menubox2Definition {
 	submenuDelay?: number;
 }
 
-/** Directives for adjusting a menubox to another element on the document. */
-interface Menubox2Adjustment {
-	/** Horizontal adjustment. Default is "right". */
+/** Directives for align a menubox to another element. */
+interface Menubox2Alignment {
+	/** Horizontal alignment. Default is "right". */
 	horizontal?: "before" | "left" | "right" | "after";
 
-	/** Vertical adjustment. Default is "below". */
+	/** Vertical alignment. Default is "below". */
 	vertical?: "above" | "top" | "bottom" | "below";
 }
 
@@ -194,9 +199,9 @@ interface Menubox2ItemDefinition {
 	cssClasses?: string[];
 
 	/**
-	 * A submenu that expands when this menu item is hovered.
+	 * A submenu that expands when this menu item is hovered (or clicked).
 	 *
-	 * The ID of the submenu is auto-generated of the parent menubox ID and the key of the menuitem.
+	 * The ID of the submenu is auto-generated of the parent's menubox ID and the key of the menu item.
 	 * So menuitems with submenus are required to have a key.
 	 */
 	submenu?: Menubox2Definition;
@@ -228,7 +233,7 @@ interface Menubox2Item<ContextType> {
 	element: HTMLElement;
 
 	/**
-	 * A submenu that opens on that menuitem.
+	 * A submenu that opens on that menu item.
 	 *
 	 * Menuitems with submenus do not trigger the callback nor do they close the
 	 * menubox when clicked.

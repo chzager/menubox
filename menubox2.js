@@ -124,8 +124,8 @@ class Menubox2
 		this.callback = options.callback;
 		/** Renderer to create the HTML elements that represent a single menu item. */
 		this.itemRenderer = (typeof options.itemRenderer === "function") ? options.itemRenderer : Menubox2.itemRenderer;
-		/** Directives how to adjust this menubox to another element on the document. */
-		this.adjustment = Object.assign({ horizontal: "left", vertical: "below" }, options.adjustment);
+		/** Directives how to align this menubox to another element on the document. */
+		this.align = Object.assign({ horizontal: "left", vertical: "below" }, options.align, options.adjustment);
 		/** CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox. */
 		this.transitions = Object.assign({ visibility: ["hidden", "visible"] }, options.transitions);
 		/** Delay in milliseconds before a submenu is opened after it's parent menuitem was hovered. Default is `300`ms. */
@@ -250,13 +250,13 @@ class Menubox2
 	 */
 	popup (pointerEvent, context = undefined, anchorElement = undefined)
 	{
-		const adjustToAnchor = (/** @type {HTMLElement} */anchorElement) =>
+		const alignToAnchor = (/** @type {HTMLElement} */anchorElement) =>
 		{
-			// TODO: Adjust center/middle
+			// TODO: Align center/middle
 			const menuboxRect = this.element.firstElementChild.getBoundingClientRect();
 			const anchorRect = anchorElement.getBoundingClientRect();
 			const position = { x: 0, y: 0 };
-			switch (this.adjustment.horizontal)
+			switch (this.align.horizontal)
 			{
 				case "before":
 					position.x = anchorRect.left - menuboxRect.width;
@@ -272,7 +272,7 @@ class Menubox2
 					position.x = anchorRect.left;
 					break;
 			}
-			switch (this.adjustment.vertical)
+			switch (this.align.vertical)
 			{
 				case "submenu-top":
 					const menuboxStyle = window.getComputedStyle(this.element);
@@ -317,7 +317,7 @@ class Menubox2
 		this.#setVisibility(true);
 		if (anchorElement instanceof HTMLElement)
 		{
-			adjustToAnchor(anchorElement);
+			alignToAnchor(anchorElement);
 		}
 		else
 		{
@@ -506,7 +506,7 @@ class Menubox2Item
 				const submenuId = parent.id + "." + this.key;
 				const submenuDef = Object.assign(
 					{
-						adjustment: {
+						align: {
 							horizontal: "after",
 							vertical: "submenu-top" // "submenu-top" is reserved for submenus and is therefore not documented.
 						},
