@@ -603,17 +603,17 @@ class Menubox2Item
 	}
 }
 
-//#region Event listeners on clicks and keydows on the document to close menuboxes.
+//#region Event listeners for clicks and keydows on the document to close all open menuboxes.
 window.addEventListener("click", (pointerEvent) =>
 {
-	if (pointerEvent.target.closest("[data-menubox]") === null)
+	if (!pointerEvent.target.closest("[data-menubox]"))
 	{
 		Menubox2.closeAll();
 	}
 });
 window.addEventListener("keydown", (keyEvent) =>
 {
-	if (["Escape"].includes(keyEvent.code))
+	if (keyEvent.code === "Escape")
 	{
 		Menubox2.closeAll();
 	}
