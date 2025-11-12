@@ -131,15 +131,15 @@ class Menubox2
 		/** Delay in milliseconds before a submenu is opened after it's parent menuitem was hovered. Default is `300`ms. */
 		this.submenuDelay = Math.max(options.submenuDelay || 300, 0);
 		/** HTML element that represents this menubox on the document. */
-		this.element = this.#newElement("div.menubox", // wrapper DIV is required for transitions
+		this.element = this.#makeElement("div.menubox", // wrapper DIV is required for transitions
 			{
 				"data-menubox": id,
 				"style": `position: ${options.position ?? "absolute"}; top:0px;left:0px`,
 				onclick: (evt) => Menubox2.onMenuItemClick(evt, this),
 				onmouseleave: () => clearTimeout(Menubox2.currentSubmenuTimerId),
 			},
-			this.#newElement("div.menubox-wrapper",
-				this.#newElement("div.menubox-items")
+			this.#makeElement("div.menubox-wrapper",
+				this.#makeElement("div.menubox-items")
 			)
 		);
 		this.element.classList.toggle("menubox-multiselect", this.isMultiselect);
@@ -204,7 +204,7 @@ class Menubox2
 		{
 			if (itemDef.separator)
 			{
-				itemElements.push(this.#newElement("hr.menubox-separator"));
+				itemElements.push(this.#makeElement("hr.menubox-separator"));
 			}
 			else
 			{
@@ -421,16 +421,12 @@ class Menubox2
 	 * @param  {...string | number | HTMLElement | {[key: string]: string | number | boolean | Function} } [content] Content (or children) to be created on/in the HTML element. This may be text content, child HTML elements or a record of attributes or event handlers.
 	 * @returns {HTMLElement} Returns the newly created HTML element with all it's content and children.
 	 */
-	#newElement (definition, ...content)
+	#makeElement (definition, ...content)
 	{
-		const [_m, tagName, _g2, id] = /^([a-z0-9]+)(#([^.\s\[]+))?/.exec(definition);
+		const [_m, tagName, _g2, id, _g4, classes] = /^([a-z0-9]+)(#([^.\s\[]+))?(\.(.+))?/.exec(definition);
 		const element = document.createElement(tagName);
 		(!!id) && (element.id = id);
-		const dotPos = definition.indexOf(".") + 1;
-		if (dotPos)
-		{
-			element.classList.add(...definition.substring(dotPos).split("."));
-		}
+		(!!classes) && element.classList.add(...classes.split("."));
 		for (let item of content)
 		{
 			if ((item !== null) && (item !== undefined))
