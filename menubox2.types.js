@@ -6,17 +6,17 @@
  * @property {"absolute"|"fixed"} [position] Positioning of the menubox on the viewport.
  * - `"absolute"`: The menubox remains an the document position while scrolling. (Default)
  * - `"fixed"`: The menubox stays at the viewport position even if the document scrolls.
- * @property {Menubox2Alignment} [align] Directives how to align this menubox on popup to another element on the document.
+ * @property {Menubox2Alignment} [align] Directives how to align this menubox on popup to another element on popup.
  * @property {{[property: string]: [string, string]}} [transitions] CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox.
  * @property {keyof Menubox2.SELECT_MODE} [selectMode] Mode of how menubox items can be selected.
  * - `"normal"`: When an item is clicked, callback is called and the menubox closes. (default)
  * - `"persistent"`:  When an item is clicked, callback is called but the menubox remains opened, you need to close it manually.
- * - `"multiselect"`: When an item is clicked, it's "checked" state toggels. The menubox remains opened until closed manually.
+ * - `"multiselect"`: When an item is clicked, its "checked" state toggels. The menubox remains opened until closed manually.
  * - `"multiselect_interactive"`: Like "multiselect", but every item click calls the callback so you can react on it.
  * @property {Menubox2Callback} [callback] Callback function on when a menubox item is clicked.
  * @property {(menubox: Menubox2<any>, event: PointerEvent) => void} [beforePopup] Event handler before the menu acutally pops up.
  * @property {Menubox2ItemRenderer} [itemRenderer] Function that creates the HTML elements of this menubox's items. Per default the native `Menubox2Item.htmlConstructor()` is used.
- * @property {number} [submenuDelay] Delay in milliseconds before a submenu is opened after it's parent menuitem was hovered. Default is `300`ms.
+ * @property {number} [submenuDelay] Delay in milliseconds before a submenu is opened after its parent menuitem was hovered. Default is `300`ms.
  *
  * @typedef Menubox2Alignment
  * Directives how to align a menubox to another element on the document.

@@ -128,7 +128,7 @@ class Menubox2
 		this.align = Object.assign({ horizontal: "left", vertical: "below" }, options.align, options.adjustment);
 		/** CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox. */
 		this.transitions = Object.assign({ visibility: ["hidden", "visible"] }, options.transitions);
-		/** Delay in milliseconds before a submenu is opened after it's parent menuitem was hovered. Default is `300`ms. */
+		/** Delay in milliseconds before a submenu is opened after its parent menuitem was hovered. Default is `300`ms. */
 		this.submenuDelay = Math.max(options.submenuDelay || 300, 0);
 		/** HTML element that represents this menubox on the document. */
 		this.element = this.#makeElement("div.menubox", // wrapper DIV is required for transitions
@@ -188,7 +188,7 @@ class Menubox2
 
 	/**
 	 * Items in this menubox.
-	 * @returns {Aray<Menubox2Item<ContextType>>}
+	 * @returns {Array<Menubox2Item<ContextType>>}
 	 */
 	get items ()
 	{
@@ -416,10 +416,19 @@ class Menubox2
 	}
 
 	/**
+	 * Returns the menu item for a given key.
+	 * @param {string} key Key of the desired menu item.
+	 */
+	getItemByKey (key)
+	{
+		return this.#items.find(i => i.key === key);
+	}
+
+	/**
 	 * Creates a new HTML element.
 	 * @param {string} definition The tag of the desired HTML element and optionally an Id and css classes, in a _query selector_ like notation (i.e. `"div#id.class1.class2"`).
 	 * @param  {...string | number | HTMLElement | {[key: string]: string | number | boolean | Function} } [content] Content (or children) to be created on/in the HTML element. This may be text content, child HTML elements or a record of attributes or event handlers.
-	 * @returns {HTMLElement} Returns the newly created HTML element with all it's content and children.
+	 * @returns {HTMLElement} Returns the newly created HTML element with all its content and children.
 	 */
 	#makeElement (definition, ...content)
 	{

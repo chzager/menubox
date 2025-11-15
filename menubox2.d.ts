@@ -22,7 +22,7 @@ interface Menubox2<ContextType> {
 	/** Directives how to align this menubox to another element. */
 	align: Menubox2Alignment;
 
-	/** Delay in milliseconds before a submenu is opened after it's parent menu item was hovered. Default is `300`ms. */
+	/** Delay in milliseconds before a submenu is opened after its parent menu item was hovered. Default is `300`ms. */
 	submenuDelay: number;
 
 	/** Current context of the menubox. This is set on {@linkcode popup()} or {@linkcode toggle()}. */
@@ -80,11 +80,14 @@ interface Menubox2<ContextType> {
 	/** Closes all submenus of this menubox. This menubox remain open. */
 	closeSubmenus(): void;
 
-	/**
-	 * Returns an array with all items of this menubox that have the _checked_ status.
-	 * @returns {Array<Menubox2Item>} Returns all items of this menubox that have the _checked_ status.
-	 */
+	/** Returns an array with all items of this menubox that have the _checked_ status. */
 	getCheckedItems(): Menubox2Item<ContextType>[];
+
+	/**
+	 * Returns the menu item for a given key.
+	 * @param key Key of the desired menu item.
+	 */
+	getItemByKey(key: string): Menubox2Item<ContextType>;
 }
 declare var Menubox2: {
 	SELECT_MODE: {
@@ -92,7 +95,7 @@ declare var Menubox2: {
 		normal: "normal";
 		/** When an item is clicked, callback is called but the menubox remains opened, you need to close it manually. */
 		persistent: "persistent";
-		/** When an item is clicked, it's "checked" state toggels. The menubox remains opened until closed manually. */
+		/** When an item is clicked, its "checked" state toggels. The menubox remains opened until closed manually. */
 		multiselect: "multiselect";
 		/** Like "multiselect", but every item click calls the callback so you can react on it. */
 		multiselect_interactive: "multiselect_interactive";
@@ -132,7 +135,7 @@ interface Menubox2Definition {
 	 * @deprecated Use `align` instead.
 	 */
 	adjustment?: Menubox2Alignment;
-	/** Directives for aligning the menubox to another element. */
+	/** Directives for aligning the menubox to another element on popup. */
 	align?: Menubox2Alignment;
 
 	/** CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox. */
@@ -142,7 +145,7 @@ interface Menubox2Definition {
 	 * Mode of how menubox items can be selected.
 	 * - `"normal"`: When an item is clicked, callback is called and the menubox closes. (default)
 	 * - `"persistent"`:  When an item is clicked, callback is called but the menubox remains opened, you need to close it manually.
-	 * - `"multiselect"`: When an item is clicked, it's "checked" state toggels. The menubox remains opened until closed manually.
+	 * - `"multiselect"`: When an item is clicked, its "checked" state toggels. The menubox remains opened until closed manually.
 	 * - `"multiselect_interactive"`: Like "multiselect", but every item click calls the callback so you can react on it.
 	 */
 	selectMode?: keyof typeof Menubox2.SELECT_MODE;
@@ -217,7 +220,7 @@ interface Menubox2Separator {
 
 /**
  * Function that constructs an HTML element representing a menu item.
- * @param itemProps Properties of the menu item to get it's representing HTML element constructed.
+ * @param itemProps Properties of the menu item to get its representing HTML element constructed.
  */
 type Menubox2ItemRenderFunction = (itemProps: Menubox2ItemDefinition) => HTMLElement;
 
