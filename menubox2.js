@@ -89,6 +89,12 @@ class Menubox2
 	};
 
 	/**
+	 * Track the event that opened a menubox to not unintentionally close it instantly.
+	 * @type {PointerEvent}
+	 */
+	static currentEvent;
+
+	/**
 	 * This menuboxes menu items.
 	 * @type {Array<Menubox2Item<ContextType>>}
 	 */
@@ -127,14 +133,14 @@ class Menubox2
 		/** Directives how to align this menubox to another element on the document. */
 		this.align = Object.assign({ horizontal: "left", vertical: "below" }, options.align, options.adjustment);
 		/** CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox. */
-		this.transitions = Object.assign({ visibility: ["hidden", "visible"] }, options.transitions);
+		this.transitions = Object.assign({}, options.transitions);
 		/** Delay in milliseconds before a submenu is opened after its parent menu item was hovered. Default is `300`ms. */
 		this.submenuDelay = Math.max(options.submenuDelay || 300, 0);
 		/** HTML element that represents this menubox on the document. */
 		this.element = this.#makeElement("div.menubox", // wrapper DIV is required for transitions
 			{
 				"data-menubox": id,
-				"style": `position: ${options.position ?? "absolute"}; top:0px;left:0px`,
+				"style": `position: ${options.position ?? "absolute"}; top:0px;left:0px;visibility:hidden;`,
 				onclick: (evt) => Menubox2.onMenuItemClick(evt, this),
 				onmouseleave: () => clearTimeout(Menubox2.currentSubmenuTimerId),
 			},
@@ -150,7 +156,7 @@ class Menubox2
 		document.body.appendChild(this.element); // This MUST happen before the items are created in order to have submenus atop their parents.
 		this.replaceItems(options.items);
 		Menubox2.instances.set(this.id, this);
-		Menubox2.closeAll();
+		this.#setVisibility(false);
 	};
 
 	/**
@@ -162,7 +168,18 @@ class Menubox2
 	 */
 	#setVisibility (visible)
 	{
-		for (const [property, values] of Object.entries(this.transitions))
+		const transitions = Object.entries(this.transitions);
+		if (visible)
+		{
+			this.element.style.visibility = "visible";
+		}
+		else if (this.element.style.visibility === "visible")
+		{
+			(transitions.length > 0)
+				? this.element.addEventListener("transitionend", () => this.element.style.visibility = "hidden", { once: true })
+				: this.element.style.visibility = "hidden";
+		}
+		for (const [property, values] of transitions)
 		{
 			let styleValue = values[(visible) ? 1 : 0];
 			if (styleValue === "auto")
@@ -303,11 +320,11 @@ class Menubox2
 			this.element.style.top = Math.round(position.y) + "px";
 			this.element.style.left = Math.round(position.x) + "px";
 		};
+		Menubox2.currentEvent = pointerEvent;
 		if (!this.parentMenubox)
 		{
 			Menubox2.closeAll();
 		}
-		pointerEvent?.stopPropagation();
 		const itemsElement = this.element.querySelector("div.menubox-items");
 		const scrollPos = (this.element.style.position === "fixed") ? { top: 0, left: 0 } : { top: document.documentElement.scrollTop, left: document.documentElement.scrollLeft };
 		itemsElement.scrollTo({ top: 0 });
@@ -365,8 +382,8 @@ class Menubox2
 	 */
 	toggle (pointerEvent, context = null, anchorElement = null)
 	{
-		const result = (this.element.style.visibility !== "visible");
-		if (result === true)
+		const beVisible = (this.element.style.visibility !== "visible");
+		if (beVisible === true)
 		{
 			this.popup(pointerEvent, context, anchorElement);
 		}
@@ -374,7 +391,7 @@ class Menubox2
 		{
 			this.close(true);
 		}
-		return result;
+		return beVisible;
 	}
 
 	/**
@@ -611,8 +628,9 @@ class Menubox2Item
 //#region Event listeners for clicks and keydows on the document to close all open menuboxes.
 window.addEventListener("click", (pointerEvent) =>
 {
-	if (!pointerEvent.target.closest("[data-menubox]"))
+	if (!pointerEvent.target.closest("[data-menubox]") && (pointerEvent !== Menubox2.currentEvent))
 	{
+		Menubox2.currentEvent = null;
 		Menubox2.closeAll();
 	}
 });
