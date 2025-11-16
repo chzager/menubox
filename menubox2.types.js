@@ -16,7 +16,7 @@
  * @property {Menubox2Callback} [callback] Callback function on when a menubox item is clicked.
  * @property {(menubox: Menubox2<any>, event: PointerEvent) => void} [beforePopup] Event handler before the menu acutally pops up.
  * @property {Menubox2ItemRenderer} [itemRenderer] Function that creates the HTML elements of this menubox's items. Per default the native `Menubox2Item.htmlConstructor()` is used.
- * @property {number} [submenuDelay] Delay in milliseconds before a submenu is opened after its parent menuitem was hovered. Default is `300`ms.
+ * @property {number} [submenuDelay] Delay in milliseconds before a submenu is opened after its parent menu item was hovered. Default is `300`ms.
  *
  * @typedef Menubox2Alignment
  * Directives how to align a menubox to another element on the document.
@@ -36,9 +36,9 @@
  * @property {boolean} [checked] Whether the item has the `checked` state. (Default `false`)
  * @property {boolean} [enabled] Whether the item is enabled for clicks. Only enabled items with a key trigger callbacks on clicks. (Default `true`).
  * @property {Array<string>} [cssClasses] Additonal classes for the menu item.
- * @property {Menubox2Definition} [submenu] A submenu that expands when this menuitem is hovered.
- * 		The ID of the submenu is auto-generated of the parent menubox ID and the key of the menuitem.
- * 		So menuitems with submenus are required to have a key.
+ * @property {Menubox2Definition} [submenu] A submenu that expands when this menu item is hovered.
+ * 		The ID of the submenu is auto-generated of the parent menubox ID and the key of the menu item.
+ * 		So menu items with submenus are required to have a key.
  *
  * @typedef Menubox2Separator
  * A separator between menubox items.
