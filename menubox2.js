@@ -128,7 +128,7 @@ class Menubox2
 		this.align = Object.assign({ horizontal: "left", vertical: "below" }, options.align, options.adjustment);
 		/** CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox. */
 		this.transitions = Object.assign({ visibility: ["hidden", "visible"] }, options.transitions);
-		/** Delay in milliseconds before a submenu is opened after its parent menuitem was hovered. Default is `300`ms. */
+		/** Delay in milliseconds before a submenu is opened after its parent menu item was hovered. Default is `300`ms. */
 		this.submenuDelay = Math.max(options.submenuDelay || 300, 0);
 		/** HTML element that represents this menubox on the document. */
 		this.element = this.#makeElement("div.menubox", // wrapper DIV is required for transitions
@@ -148,7 +148,7 @@ class Menubox2
 			this.element.classList.add(...options.css.split(" "));
 		}
 		document.body.appendChild(this.element); // This MUST happen before the items are created in order to have submenus atop their parents.
-		this.items = options.items;
+		this.replaceItems(options.items);
 		Menubox2.instances.set(this.id, this);
 		Menubox2.closeAll();
 	};
@@ -186,16 +186,17 @@ class Menubox2
 		}
 	};
 
-	/**
-	 * Items in this menubox.
-	 * @returns {Array<Menubox2Item<ContextType>>}
-	 */
+	/** Items in this menubox. */
 	get items ()
 	{
 		return this.#items;
 	}
-	/** @param {Array<Menubox2ItemDefinition>} itemDefs  */
-	set items (itemDefs)
+
+	/**
+	 * Removes all current items form the menubox and creates new from the given definitions.
+	 * @param {Array<Menubox2ItemDefinition>} itemDefs The new items for the menubox.
+	 */
+	replaceItems (itemDefs)
 	{
 		this.#items = [];
 		/** @type {Array<HTMLElement>} */
@@ -364,7 +365,6 @@ class Menubox2
 	 */
 	toggle (pointerEvent, context = null, anchorElement = null)
 	{
-		pointerEvent.stopPropagation();
 		const result = (this.element.style.visibility !== "visible");
 		if (result === true)
 		{
@@ -523,7 +523,7 @@ class Menubox2Item
 					{
 						css: "submenubox",
 					});
-				/** A submenu that opens on that menuitem. Menuitems with submenus do not trigger the callback nor do they close the menubox when clicked. @type {Menubox2<ContextType>} */
+				/** A submenu that opens on that menu item. Menu items with submenus do not trigger the callback nor do they close the menubox when clicked. @type {Menubox2<ContextType>} */
 				this.submenu = new Menubox2(submenuId, submenuDef, parent);
 				this.element.classList.add("submenuitem");
 			}

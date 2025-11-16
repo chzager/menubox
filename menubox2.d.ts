@@ -14,7 +14,6 @@ interface Menubox2<ContextType> {
 
 	/** Items in this menubox. */
 	get items(): Array<Menubox2Item<ContextType>>;
-	set items(val: Array<Menubox2ItemDefinition>);
 
 	/** Renderer to create the HTML elements that represent a single menu item. */
 	itemRenderer: Menubox2ItemRenderFunction;
@@ -88,6 +87,12 @@ interface Menubox2<ContextType> {
 	 * @param key Key of the desired menu item.
 	 */
 	getItemByKey(key: string): Menubox2Item<ContextType>;
+
+	/**
+	 * Removes all current items form the menubox and creates new from the given definitions.
+	 * @param itemDefs The new items for the menubox.
+	 */
+	replaceItems(itemDefs: Array<Menubox2ItemDefinition>): void;
 }
 declare var Menubox2: {
 	SELECT_MODE: {
@@ -205,7 +210,7 @@ interface Menubox2ItemDefinition {
 	 * A submenu that expands when this menu item is hovered (or clicked).
 	 *
 	 * The ID of the submenu is auto-generated of the parent's menubox ID and the key of the menu item.
-	 * So menuitems with submenus are required to have a key.
+	 * So menu items with submenus are required to have a key.
 	 */
 	submenu?: Menubox2Definition;
 
@@ -238,7 +243,7 @@ interface Menubox2Item<ContextType> {
 	/**
 	 * A submenu that opens on that menu item.
 	 *
-	 * Menuitems with submenus do not trigger the callback nor do they close the
+	 * Menu items with submenus do not trigger the callback nor do they close the
 	 * menubox when clicked.
 	 */
 	submenu: Menubox2<ContextType>;
