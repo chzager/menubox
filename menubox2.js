@@ -370,7 +370,7 @@ class Menubox2
 		{
 			activeSubmenus.classList.remove("active");
 		}
-		(closeSubmenus === true) ? this.closeSubmenus() : this.parentMenubox?.close();
+		(closeSubmenus) ? this.closeSubmenus() : this.parentMenubox?.close();
 	};
 
 	/**
@@ -383,14 +383,9 @@ class Menubox2
 	toggle (pointerEvent, context = null, anchorElement = null)
 	{
 		const beVisible = (this.element.style.visibility !== "visible");
-		if (beVisible === true)
-		{
-			this.popup(pointerEvent, context, anchorElement);
-		}
-		else
-		{
-			this.close(true);
-		}
+		(beVisible)
+			? this.popup(pointerEvent, context, anchorElement)
+			: this.close(true);
 		return beVisible;
 	}
 
