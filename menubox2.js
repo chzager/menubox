@@ -181,7 +181,7 @@ class Menubox2
 		}
 		for (const [property, values] of transitions)
 		{
-			let styleValue = values[(visible) ? 1 : 0];
+			let styleValue = values[(visible) ? "opened" : "closed"];
 			if (styleValue === "auto")
 			{
 				const rect = this.element.firstElementChild.getBoundingClientRect();
@@ -363,7 +363,7 @@ class Menubox2
 	 * Closes the menubox.
 	 * @param {boolean} [closeSubmenus] If `true` all submenus of this box will be closed. Default `false`.
 	 */
-	close (closeSubmenus)
+	close (closeSubmenus = false)
 	{
 		this.#setVisibility(false);
 		for (const activeSubmenus of /** @type {NodeListOf<HTMLElement>} */(this.element.querySelectorAll(".menubox-item.active")))

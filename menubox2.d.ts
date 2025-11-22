@@ -65,7 +65,7 @@ interface Menubox2<ContextType> {
 	 * Closes the menubox.
 	 * @param closeSubmenus If `true` all submenus of this box will be closed. Default `false`.
 	 */
-	close(closeSubmenus: boolean): void;
+	close(closeSubmenus?: boolean): void;
 
 	/**
 	 * Pops up the menubox if it is not yet opened. Closes the menubox if it is already opened.
@@ -144,7 +144,7 @@ interface Menubox2Definition {
 	align?: Menubox2Alignment;
 
 	/** CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox. */
-	transitions?: { [property: string]: [string, string] };
+	transitions?: Menubox2Transitions;
 
 	/**
 	 * Mode of how menubox items can be selected.
@@ -221,6 +221,16 @@ interface Menubox2ItemDefinition {
 /** A separator between menubox items. */
 interface Menubox2Separator {
 	separator: any;
+}
+
+/** CSS styles to apply on the menubox in closed or open state. Remember to declare matching transitions in the CSS for the menubox. */
+interface Menubox2Transitions {
+	[property: string]: {
+		/** Property value when the menubox is opened. */
+		opened: string;
+		/** Property value when the menubox is closed. */
+		closed: string;
+	}
 }
 
 /**
