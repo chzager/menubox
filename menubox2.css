@@ -11,13 +11,13 @@
 	font-size: 1rem;
 	border: 1px solid var(--lines-color);
 	background-color: white;
-	padding: var(--content-padding) 0;
 	box-shadow: 0 0.3rem 1rem #00000092;
 	border-radius: 0.5rem;
 	overflow: hidden;
 	z-index: initial;
 
 	.menubox-wrapper {
+		margin: var(--content-padding);
 		user-select: none;
 		white-space: nowrap;
 		min-width: max-content;
@@ -27,7 +27,6 @@
 	.menubox-label {
 		display: block;
 		padding: 0.3em 2em 0.3em 1em;
-		margin: 0 var(--content-padding);
 		border-radius: 0.3em;
 	}
 	.menubox-item {

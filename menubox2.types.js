@@ -26,8 +26,8 @@
  *
  * @typedef Menubox2Alignment
  * Directives how to align a menubox to another element on the document.
- * @property {"before"|"left"|"right"|"after"} [horizontal] Alignment on the horizontal axsis. Default is `"right"`.
- * @property {"above"|"top"|"bottom"|"below"} [vertical] Alignment on the vertical axsis. Default is `"below"`.
+ * @property {"before"|"left"|"right"|"after"|"center"} [horizontal] Alignment on the horizontal axsis. Default is `"right"`.
+ * @property {"above"|"top"|"bottom"|"below"|"middle"} [vertical] Alignment on the vertical axsis. Default is `"below"`.
  *
  * @callback Menubox2Callback
  * Callback function on when a menubox item is clicked.

@@ -174,10 +174,10 @@ interface Menubox2Definition {
 /** Directives for align a menubox to another element. */
 interface Menubox2Alignment {
 	/** Horizontal alignment. Default is "right". */
-	horizontal?: "before" | "left" | "right" | "after";
+	horizontal?: "before" | "left" | "right" | "after" | "center";
 
 	/** Vertical alignment. Default is "below". */
-	vertical?: "above" | "top" | "bottom" | "below";
+	vertical?: "above" | "top" | "bottom" | "below" | "middle";
 }
 
 /**

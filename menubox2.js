@@ -185,14 +185,14 @@ class Menubox2
 			if (styleValue === "auto")
 			{
 				const rect = this.element.firstElementChild.getBoundingClientRect();
-				const style = window.getComputedStyle(this.element);
+				const style = window.getComputedStyle(this.element.firstElementChild);
 				if (property === "height")
 				{
-					styleValue = rect.height + parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) + parseFloat(style.marginTop) + parseFloat(style.marginBottom) + "px";
+					styleValue = rect.height + parseFloat(style.marginTop) + parseFloat(style.marginBottom) + "px";
 				}
 				else if (property === "width")
 				{
-					styleValue = rect.width + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) + parseFloat(style.marginLeft) + parseFloat(style.marginRight) + "px";
+					styleValue = rect.width + parseFloat(style.marginLeft) + parseFloat(style.marginRight) + "px";
 				}
 				else
 				{
@@ -268,58 +268,11 @@ class Menubox2
 	 */
 	popup (pointerEvent, context = undefined, anchorElement = undefined)
 	{
-		const alignToAnchor = (/** @type {HTMLElement} */anchorElement) =>
-		{
-			// TODO: Align center/middle
-			const menuboxRect = this.element.firstElementChild.getBoundingClientRect();
-			const anchorRect = anchorElement.getBoundingClientRect();
-			const position = { x: 0, y: 0 };
-			switch (this.align.horizontal)
-			{
-				case "before":
-					position.x = anchorRect.left - menuboxRect.width;
-					break;
-				case "right":
-					position.x = anchorRect.right - menuboxRect.width;
-					break;
-				case "after":
-					position.x = anchorRect.right;
-					break;
-				case "left":
-				default:
-					position.x = anchorRect.left;
-					break;
-			}
-			switch (this.align.vertical)
-			{
-				case "submenu-top":
-					const menuboxStyle = window.getComputedStyle(this.element);
-					position.y = anchorRect.top - Number.parseFloat(menuboxStyle.paddingTop) - Number.parseFloat(menuboxStyle.borderTopWidth);
-					break;
-				case "above":
-					position.y = anchorRect.top - menuboxRect.height;
-					break;
-				case "top":
-					position.y = anchorRect.top;
-					break;
-				case "bottom":
-					position.y = anchorRect.bottom - menuboxRect.height;
-					break;
-				case "below":
-				default:
-					position.y = anchorRect.bottom;
-					break;
-			}
-			/* rescpect scroll position for non-fixed elements */
-			if (window.getComputedStyle(this.element).position !== "fixed")
-			{
-				position.y += window.scrollY;
-				position.x += window.scrollX;
-			}
-			/* set position */
-			this.element.style.top = Math.round(position.y) + "px";
-			this.element.style.left = Math.round(position.x) + "px";
-		};
+		const menuboxStyle = window.getComputedStyle(this.element.firstElementChild);
+		const menuboxRect = new DOMRect(0, 0,
+			parseFloat(menuboxStyle.width) + parseFloat(menuboxStyle.marginLeft) + parseFloat(menuboxStyle.marginRight),
+			parseFloat(menuboxStyle.height) + parseFloat(menuboxStyle.marginTop) + parseFloat(menuboxStyle.marginBottom),
+		);
 		Menubox2.currentEvent = pointerEvent;
 		if (!this.parentMenubox)
 		{
@@ -333,16 +286,62 @@ class Menubox2
 		this.context = context;
 		this.beforePopup?.(this, pointerEvent);
 		this.#setVisibility(true);
-		if (anchorElement instanceof HTMLElement)
+		const anchorRect = (anchorElement instanceof HTMLElement)
+			? anchorElement.getBoundingClientRect()
+			: new DOMRect(pointerEvent.clientX + 0, pointerEvent.clientY + 0, 0, 0);
+		// Align menubox to anchorRect:
+		const position = new DOMPoint(0, 0);
+		switch (this.align.horizontal)
 		{
-			alignToAnchor(anchorElement);
+			case "before":
+				position.x = anchorRect.left - menuboxRect.width;
+				break;
+			case "right":
+				position.x = anchorRect.right - menuboxRect.width;
+				break;
+			case "after":
+				position.x = anchorRect.right;
+				break;
+			case "center":
+				position.x = anchorRect.left + (anchorRect.width - menuboxRect.width) / 2;
+				break;
+			case "left":
+			default:
+				position.x = anchorRect.left;
+				break;
 		}
-		else
+		switch (this.align.vertical)
 		{
-			this.element.style.top = pointerEvent.clientY + scrollPos.top + "px";
-			this.element.style.left = pointerEvent.clientX + scrollPos.left + "px";
+			case "submenu-top":
+				position.y = anchorRect.top - Number.parseFloat(menuboxStyle.marginTop) - Number.parseFloat(menuboxStyle.borderTopWidth);
+				break;
+			case "above":
+				position.y = anchorRect.top - menuboxRect.height;
+				break;
+			case "top":
+				position.y = anchorRect.top;
+				break;
+			case "bottom":
+				position.y = anchorRect.bottom - menuboxRect.height;
+				break;
+			case "middle":
+				position.y = anchorRect.top + (anchorRect.height - menuboxRect.height) / 2;
+				break;
+			case "below":
+			default:
+				position.y = anchorRect.bottom;
+				break;
 		}
-		/* prevent menubox exceeds viewport */
+		// Rescpect scroll position for non-fixed elements:
+		if (menuboxStyle.position !== "fixed")
+		{
+			position.y += window.scrollY;
+			position.x += window.scrollX;
+		}
+		// Set position:
+		this.element.style.top = Math.round(Math.max(position.y, visualViewport.pageTop)) + "px";
+		this.element.style.left = Math.round(Math.max(position.x, visualViewport.pageLeft)) + "px";
+		// Prevent menubox from exceeding viewport:
 		const elementRect = this.element.getBoundingClientRect();
 		if (elementRect.right > visualViewport.width)
 		{
