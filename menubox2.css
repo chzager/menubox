@@ -13,6 +13,7 @@
 	background-color: white;
 	box-shadow: 0 0.3rem 1rem #00000092;
 	border-radius: 0.5rem;
+	max-width: 100vw;
 	overflow: hidden;
 	z-index: initial;
 
@@ -20,7 +21,8 @@
 		margin: var(--content-padding);
 		user-select: none;
 		white-space: nowrap;
-		min-width: max-content;
+		width: max-content;
+		max-width: 100vw;
 	}
 
 	.menubox-item,
