@@ -1,6 +1,6 @@
 /**
  * Menubox - pop-up GUI elements as menus for web applications.
- * @version 1.1.1
+ * @version 1.1.2
  * @copyright (c) 2024 Christoph Zager
  * @license MIT
  * @link https://github.com/chzager/menubox
@@ -136,7 +136,7 @@ interface Menubox2Definition {
 	position?: "absolute" | "fixed";
 
 	/**
-	 * // DEPRECATED Directives how to align this menubox to another element on the document.
+	 * // DEPRECATED
 	 * @deprecated Use `align` instead.
 	 */
 	adjustment?: Menubox2Alignment;
