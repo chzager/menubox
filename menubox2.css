@@ -21,7 +21,6 @@
 		margin: var(--content-padding);
 		user-select: none;
 		white-space: nowrap;
-		width: max-content;
 		max-width: 100vw;
 	}
 
