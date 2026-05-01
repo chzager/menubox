@@ -5,7 +5,33 @@
  * @license MIT
  * @link https://github.com/chzager/menubox
  */
-interface Menubox2<ContextType> {
+declare class Menubox2<ContextType> {
+	static SELECT_MODE: {
+		/** When an item is clicked, callback is called and the menubox closes. (default) */
+		normal: "normal";
+		/** When an item is clicked, callback is called but the menubox remains opened, you need to close it manually. */
+		persistent: "persistent";
+		/** When an item is clicked, its "checked" state toggels. The menubox remains opened until closed manually. */
+		multiselect: "multiselect";
+		/** Like "multiselect", but every item click calls the callback so you can react on it. */
+		multiselect_interactive: "multiselect_interactive";
+	};
+
+	/** Map of all menubox instances. */
+	static instances: Map<string, Menubox2<any>>;
+
+	/** Closes all menuboxes. */
+	static closeAll(): void;
+
+	/** Default creator for a menu item's representation HTML element. */
+	static itemRenderer: Menubox2ItemRenderFunction;
+
+	/**
+	 * @param id Id of this menubox.
+	 * @param options Definition of how this menubox is to be created.
+	 */
+	constructor(id: string, options: Menubox2Definition);
+
 	/** Unique identifier of the menubox. */
 	id: string;
 
@@ -94,34 +120,45 @@ interface Menubox2<ContextType> {
 	 */
 	replaceItems(itemDefs: Array<Menubox2ItemDefinition>): void;
 }
-declare var Menubox2: {
-	SELECT_MODE: {
-		/** When an item is clicked, callback is called and the menubox closes. (default) */
-		normal: "normal";
-		/** When an item is clicked, callback is called but the menubox remains opened, you need to close it manually. */
-		persistent: "persistent";
-		/** When an item is clicked, its "checked" state toggels. The menubox remains opened until closed manually. */
-		multiselect: "multiselect";
-		/** Like "multiselect", but every item click calls the callback so you can react on it. */
-		multiselect_interactive: "multiselect_interactive";
-	};
 
-	/** Map of all menubox instances. */
-	instances: Map<string, Menubox2<any>>;
+/** An item of a menubox. */
+declare class Menubox2Item<ContextType> {
+	/** This menu item's key. */
+	key?: string;
 
-	/** Closes all menuboxes. */
-	closeAll(): void;
+	/** Menubox that owns this menu item. */
+	menubox: Menubox2<ContextType>;
 
-	/** Default creator for a menu item's representation HTML element. */
-	itemRenderer: Menubox2ItemRenderFunction;
+	/** HTML element that represents this menu item. */
+	element: HTMLElement;
 
 	/**
-	 * @param id Id of this menubox.
-	 * @param options Definition of how this menubox is to be created.
+	 * A submenu that opens on that menu item.
+	 *
+	 * Menu items with submenus do not trigger the callback nor do they close the
+	 * menubox when clicked.
 	 */
-	new <ContextType>(id: string, options: Menubox2Definition): Menubox2<ContextType>;
-	prototype: Menubox2<any>;
-};
+	submenu: Menubox2<ContextType>;
+
+	/** Tells whether the item has the "checked" state or not. */
+	checked: boolean;
+
+	/**
+	 * Tells whether the item is enabled or not. Disabled items do not trigger the callback when they are clicked.
+	 * Only enabled items with a key trigger callbacks on clicks.
+	 */
+	enabled: boolean;
+
+	/**
+	 * @param properties Properties of the menu item.
+	 * @param parent Menubox that owns this menu item.
+	 *  If omitted, the default constructor function of `Menubox2Item` is used.
+	 */
+	constructor(properties: any, parent: Menubox2<ContextType>);
+
+	/** The label of the menu item. This is the text that is being displayed in the document. */
+	get label(): string;
+}
 
 /** Definition of a menubox to be created. */
 interface Menubox2Definition {
@@ -136,7 +173,6 @@ interface Menubox2Definition {
 	position?: "absolute" | "fixed";
 
 	/**
-	 * // DEPRECATED
 	 * @deprecated Use `align` instead.
 	 */
 	adjustment?: Menubox2Alignment;
@@ -238,44 +274,3 @@ interface Menubox2Transitions {
  * @param itemProps Properties of the menu item to get its representing HTML element constructed.
  */
 type Menubox2ItemRenderFunction = (itemProps: Menubox2ItemDefinition) => HTMLElement;
-
-/** An item of a menubox. */
-interface Menubox2Item<ContextType> {
-	/** This menu item's key. */
-	key?: string;
-
-	/** Menubox that owns this menu item. */
-	menubox: Menubox2<ContextType>;
-
-	/** HTML element that represents this menu item. */
-	element: HTMLElement;
-
-	/**
-	 * A submenu that opens on that menu item.
-	 *
-	 * Menu items with submenus do not trigger the callback nor do they close the
-	 * menubox when clicked.
-	 */
-	submenu: Menubox2<ContextType>;
-
-	/** Tells whether the item has the "checked" state or not. */
-	checked: boolean;
-
-	/**
-	 * Tells whether the item is enabled or not. Disabled items do not trigger the callback when they are clicked.
-	 * Only enabled items with a key trigger callbacks on clicks.
-	 */
-	enabled: boolean;
-
-	/** The label of the menu item. This is the text that is being displayed in the document. */
-	get label(): string;
-}
-declare var Menubox2Item: {
-	/**
-	 * @param properties Properties of the menu item.
-	 * @param parent Menubox that owns this menu item.
-	 *  If omitted, the default constructor function of `Menubox2Item` is used.
-	 */
-	new <ContextType>(properties: any, parent: Menubox2<ContextType>): Menubox2Item<ContextType>;
-	readonly prototype: Menubox2Item<any>;
-};

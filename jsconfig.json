@@ -1,16 +1,15 @@
 {
 	"compilerOptions": {
-		"module": "None",
-		"target": "ES2021",
+		"target": "ES2022",
 		"lib": [
-			"DOM",
-			"ES2021"
+			"ES2022",
+			"DOM"
 		]
 	},
 	"include": [
-		"**/*.js"
+		"*.js"
 	],
 	"exclude": [
-		"**/*.ts"
+		"*.min.*"
 	]
 }

@@ -6,6 +6,7 @@
  * @property {"absolute"|"fixed"} [position] Positioning of the menubox on the viewport.
  * - `"absolute"`: The menubox remains an the document position while scrolling. (Default)
  * - `"fixed"`: The menubox stays at the viewport position even if the document scrolls.
+ * @property {Menubox2Alignment} [adjustment] // DEPRECATED Use `align` instead.
  * @property {Menubox2Alignment} [align] Directives how to align this menubox on popup to another element on popup.
  * @property {Menubox2Transitions} [transitions] CSS styles to apply on the menubox when opening. The first value is for closed state, the second value is for opened state. Remember to declare matching transitions in the CSS class of the menubox.
  * @property {keyof Menubox2.SELECT_MODE} [selectMode] Mode of how menubox items can be selected.
